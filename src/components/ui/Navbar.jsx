@@ -9,7 +9,7 @@ const Navbar = () => {
       </span>
 
       <button className="btn btn-outline-danger">
-      <FontAwesomeIcon icon={ faSignOutAlt } />&nbsp;Logout
+      <FontAwesomeIcon icon={ faSignOutAlt } />&nbsp;Salir
       </button>
     </div>
   );
