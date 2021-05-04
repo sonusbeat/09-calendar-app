@@ -1,35 +1,52 @@
-import { useState } from "react";
+import { useState } from 'react';
 import Modal from "react-modal";
+import moment from 'moment';
+import DateTimePicker from 'react-datetime-picker';
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+  },
+};
+
+const now = moment().minutes(0).seconds(0).add(1, "hours"); // 2:00:00
+const nowPlus1 = now.clone().add(1, "hours"); // 3:00:00
+
 
 const CalendarModal = () => {
-  const [ isOpen, setIsOpen ] = useState( true );
 
-  const customStyles = {
-    content : {
-      top                   : '50%',
-      left                  : '50%',
-      right                 : 'auto',
-      bottom                : 'auto',
-      marginRight           : '-50%',
-      transform             : 'translate(-50%, -50%)'
-    }
-  };
+  const [ dateStart, setDateStart ] = useState( now.toDate() );
+  const [ dateEnd, setDateEnd ] = useState( nowPlus1.toDate() );
 
   // Para cerrar el modal
   const closeModal = () => {
     // Se cambia el estado de isOpen
-    setIsOpen( false );
+    console.log("Cerrando ...");
+  };
+
+  // Cambia la fecha de inicio con el useState
+  const handleStartDateChange = ( event ) => {
+    setDateStart( event );
+  };
+
+  // Cambia la fecha de inicio con el useState
+  const handleEndDateChange = ( event ) => {
+    setDateEnd( event );
   };
 
   // Make sure to bind modal to your appElement
   // (https://reactcommunity.org/react-modal/accessibility/)
-  Modal.setAppElement('#root');
+  Modal.setAppElement("#root");
 
   return (
     <Modal
-      // Si es true el modal esta abierto y
-      // viene del useState su valor por default "true"
-      isOpen={ isOpen }
+      // Si se pone true se mostrará el modal
+      isOpen={ true }
 
       // onAfterOpen={ afterOpenModal }
 
@@ -48,11 +65,64 @@ const CalendarModal = () => {
       // La clase del overlay del modal
       overlayClassName="modal-fondo"
     >
-      <h1>React Modal</h1>
+      <h1> Nuevo evento </h1>
       <hr />
-      <p>Lorem ipsum dolor dolem ...</p>
+      <form className="container">
+        <div className="form-group">
+          <label>Fecha y hora inicio</label>
+          <DateTimePicker
+            onChange={ handleStartDateChange }
+            value={ dateStart }
+            className="form-control"
+          />
+        </div>
+
+        <div className="form-group">
+          <label>Fecha y hora fin</label>
+          <DateTimePicker
+            onChange={ handleEndDateChange }
+            value={ dateEnd }
+            // Validación para que nunca sea menor a dateStart
+            minDate={ dateStart }
+            className="form-control"
+          />
+        </div>
+
+        <hr />
+        <div className="form-group">
+          <label>Titulo y notas</label>
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Título del evento"
+            name="title"
+            autoComplete="off"
+          />
+          <small id="emailHelp" className="form-text text-muted">
+            Una descripción corta
+          </small>
+        </div>
+
+        <div className="form-group">
+          <textarea
+            type="text"
+            className="form-control"
+            placeholder="Notas"
+            rows="5"
+            name="notes"
+          ></textarea>
+          <small id="emailHelp" className="form-text text-muted">
+            Información adicional
+          </small>
+        </div>
+
+        <button type="submit" className="btn btn-outline-primary btn-block">
+          <i className="far fa-save"></i>
+          <span>Guardar</span>
+        </button>
+      </form>
     </Modal>
   );
-}
+};
 
 export default CalendarModal;
