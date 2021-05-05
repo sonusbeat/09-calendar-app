@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { uiOpenModal } from '../../actions/uiAction';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from "moment";
 
@@ -26,18 +28,18 @@ const events = [{
 }];
 
 const CalendarScreen = () => {
+  // Redux
+  const dispatch = useDispatch();
 
   // Obtener o cambiar state de lastView del localstorage para mantener, month, week, day
   const [lastView, setLastView] = useState( localStorage.getItem("lastView") || "month" );
 
   const onDoubleClick = ( event ) => {
-    console.clear();
-    console.log( event );
+    dispatch( uiOpenModal() );
   };
 
   const onSelectEvent = ( event ) => {
-    console.clear();
-    console.log( event );
+
   };
 
   const onViewChange = ( event ) => {

@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { uiCloseModal } from '../../actions/uiAction';
 import Modal from "react-modal";
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
@@ -18,15 +20,16 @@ const customStyles = {
 const now = moment().minutes(0).seconds(0).add(1, "hours"); // 2:00:00
 const nowPlus1 = now.clone().add(1, "hours"); // 3:00:00
 
-
 const CalendarModal = () => {
+  // Redux
+  const { modalOpen } = useSelector( state => state.ui )
+  const dispatch = useDispatch();
 
-  const [ dateStart, setDateStart ] = useState( now.toDate() );
-  const [ dateEnd, setDateEnd ] = useState( nowPlus1.toDate() );
+  // useState
+  const [ dateStart, setDateStart ]   = useState( now.toDate() );
+  const [ dateEnd, setDateEnd ]       = useState( nowPlus1.toDate() );
   const [ titleValid, setTitleValid ] = useState( true );
   const [ notesValid, setNotesValid ] = useState( true );
-
-
   const [ formValues, setFormValues ] = useState({
     title: "",
     notes: "",
@@ -34,6 +37,7 @@ const CalendarModal = () => {
     end: nowPlus1.toDate(),
   });
 
+  // Destructurar las propiedades de formValues
   const { notes, title, start, end } = formValues;
 
   const handleInputChange = ({ target }) => {
@@ -47,12 +51,8 @@ const CalendarModal = () => {
 
   };
 
-  // Para cerrar el modal
   const closeModal = () => {
-    // Se cambia el estado de isOpen
-    console.log("Enviando formulario ...");
-
-    // TODO: Cerrar el modal
+    dispatch( uiCloseModal() )
   };
 
   // Cambia la fecha de inicio con el useState
@@ -117,7 +117,7 @@ const CalendarModal = () => {
   return (
     <Modal
       // Si se pone true se mostrará el modal
-      isOpen={ true }
+      isOpen={ modalOpen }
 
       // onAfterOpen={ afterOpenModal }
 
