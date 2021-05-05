@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Modal from "react-modal";
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
+import Swal from "sweetalert2";
 
 const customStyles = {
   content: {
@@ -22,6 +23,9 @@ const CalendarModal = () => {
 
   const [ dateStart, setDateStart ] = useState( now.toDate() );
   const [ dateEnd, setDateEnd ] = useState( nowPlus1.toDate() );
+  const [ titleValid, setTitleValid ] = useState( true );
+  const [ notesValid, setNotesValid ] = useState( true );
+
 
   const [ formValues, setFormValues ] = useState({
     title: "",
@@ -30,7 +34,7 @@ const CalendarModal = () => {
     end: nowPlus1.toDate(),
   });
 
-  const { notes, title } = formValues;
+  const { notes, title, start, end } = formValues;
 
   const handleInputChange = ({ target }) => {
 
@@ -46,7 +50,9 @@ const CalendarModal = () => {
   // Para cerrar el modal
   const closeModal = () => {
     // Se cambia el estado de isOpen
-    console.log("Cerrando ...");
+    console.log("Enviando formulario ...");
+
+    // TODO: Cerrar el modal
   };
 
   // Cambia la fecha de inicio con el useState
@@ -74,7 +80,33 @@ const CalendarModal = () => {
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
-    console.log( formValues );
+    const momentStart = moment( start );
+    const momentEnd = moment( end );
+
+    // Validación
+    // También existe: isBefore()
+    // También existe: isAfter()
+    if ( momentStart.isSameOrAfter( momentEnd ) ) {
+      return Swal.fire("Error", "La fecha final debe de ser mayor a la fecha de inicio", "error");
+    }
+
+    if ( title.trim().length < 3 ) {
+      setTitleValid( false );
+      Swal.fire("Error", "El título debe ser mayor a 3 caracteres", "error");
+      return;
+    }
+
+    if ( notes.trim().length < 8 ) {
+      setNotesValid( false );
+      Swal.fire("Error", "Las notas deben ser mayor a 8 caracteres", "error");
+    }
+
+    setTitleValid( true );
+    setNotesValid( true );
+
+    closeModal();
+
+    // TODO: Realizar guardado en base de datos
   };
 
 
@@ -135,7 +167,7 @@ const CalendarModal = () => {
           <label>Titulo y notas</label>
           <input
             type="text"
-            className="form-control"
+            className={ `form-control ${ !titleValid && 'is-invalid' }` }
             placeholder="Evento"
             name="title"
             autoComplete="off"
@@ -150,11 +182,12 @@ const CalendarModal = () => {
         <div className="form-group">
           <textarea
             type="text"
-            className="form-control"
+            className={ `form-control ${ !notesValid && 'is-invalid' }` }
             placeholder="Notas"
             rows="5"
             name="notes"
             onChange={ handleInputChange }
+            value={ notes }
           ></textarea>
           <small id="emailHelp" className="form-text text-muted">
             Información adicional
