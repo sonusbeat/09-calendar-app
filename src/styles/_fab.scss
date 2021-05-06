@@ -1,0 +1,20 @@
+.fab {
+  position: fixed;
+  bottom: 25px;
+  right: 25px;
+
+  display: block;
+  width: 70px;
+  height: 70px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 30px;
+  border-radius: 100%;
+
+  &:focus {
+    box-shadow: none;
+  }
+}

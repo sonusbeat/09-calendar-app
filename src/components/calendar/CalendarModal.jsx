@@ -5,6 +5,8 @@ import Modal from "react-modal";
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSave } from '@fortawesome/free-solid-svg-icons'
 
 const customStyles = {
   content: {
@@ -195,7 +197,7 @@ const CalendarModal = () => {
         </div>
 
         <button type="submit" className="btn btn-outline-primary btn-block">
-          <i className="far fa-save"></i>
+          <FontAwesomeIcon icon={ faSave } />&nbsp;
           <span>Guardar</span>
         </button>
       </form>
