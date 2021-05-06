@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/uiAction';
 import { eventSetActive } from '../../actions/eventAction';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
@@ -17,21 +17,12 @@ import AddNewFab from './AddNewFab';
 moment.locale("es");
 const localizer = momentLocalizer(moment)
 
-const events = [{
-  title: "Junta con UI",
-  start: moment().add(2, "days").toDate(), // new Date()
-  end: moment().add(2, "days").add( 2, "hours" ).toDate(),
-  bgcolor: "#fafafa",
-  notes: "Traer libreta de apuntes",
-  user: {
-    _id: "258gd968&#tg6",
-    name: "Daniel"
-  }
-}];
-
 const CalendarScreen = () => {
   // Redux
   const dispatch = useDispatch();
+
+  // Traer los eventos del Redux
+  const { events } = useSelector(state => state.calendar);
 
   // Obtener o cambiar state de lastView del localstorage para mantener, month, week, day
   const [lastView, setLastView] = useState( localStorage.getItem("lastView") || "month" );
@@ -42,7 +33,6 @@ const CalendarScreen = () => {
 
   const onSelectEvent = ( event ) => {
     dispatch( eventSetActive( event ) );
-    dispatch( uiOpenModal() );
   };
 
   const onViewChange = ( event ) => {

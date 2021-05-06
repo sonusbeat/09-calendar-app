@@ -1,13 +1,13 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Modal from "react-modal";
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSave } from '@fortawesome/free-solid-svg-icons'
+import { faSave, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { uiCloseModal } from '../../actions/uiAction';
-import { eventAddNew } from '../../actions/eventAction';
+import { eventAddNew, eventClearActiveEvent } from '../../actions/eventAction';
 
 const customStyles = {
   content: {
@@ -23,9 +23,17 @@ const customStyles = {
 const now = moment().minutes(0).seconds(0).add(1, "hours"); // 2:00:00
 const nowPlus1 = now.clone().add(1, "hours"); // 3:00:00
 
+const initEvent = {
+  title: "",
+  notes: "",
+  start: now.toDate(),
+  end: nowPlus1.toDate(),
+};
+
 const CalendarModal = () => {
   // Redux
   const { modalOpen } = useSelector( state => state.ui )
+  const { activeEvent } = useSelector( state => state.calendar )
   const dispatch = useDispatch();
 
   // useState
@@ -33,15 +41,14 @@ const CalendarModal = () => {
   const [ dateEnd, setDateEnd ]       = useState( nowPlus1.toDate() );
   const [ titleValid, setTitleValid ] = useState( true );
   const [ notesValid, setNotesValid ] = useState( true );
-  const [ formValues, setFormValues ] = useState({
-    title: "",
-    notes: "",
-    start: now.toDate(),
-    end: nowPlus1.toDate(),
-  });
+  const [ formValues, setFormValues ] = useState( initEvent );
 
   // Destructurar las propiedades de formValues
   const { notes, title, start, end } = formValues;
+
+  useEffect(() => {
+    activeEvent && setFormValues(activeEvent);
+  }, [activeEvent, setFormValues]);
 
   const handleInputChange = ({ target }) => {
 
@@ -56,6 +63,8 @@ const CalendarModal = () => {
 
   const closeModal = () => {
     dispatch( uiCloseModal() )
+    dispatch( eventClearActiveEvent() );
+    setFormValues( initEvent );
   };
 
   // Cambia la fecha de inicio con el useState
@@ -149,6 +158,13 @@ const CalendarModal = () => {
       // La clase del overlay del modal
       overlayClassName="modal-fondo"
     >
+      <button
+        className="btn btn-secondary btn-close"
+        onClick={ closeModal }
+      >
+        <FontAwesomeIcon icon={ faTimes } />
+      </button>
+
       <h1> Nuevo evento </h1>
       <hr />
       <form
