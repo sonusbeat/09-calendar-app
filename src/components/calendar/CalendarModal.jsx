@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { uiCloseModal } from '../../actions/uiAction';
 import Modal from "react-modal";
 import moment from 'moment';
 import DateTimePicker from 'react-datetime-picker';
 import Swal from "sweetalert2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave } from '@fortawesome/free-solid-svg-icons'
+import { uiCloseModal } from '../../actions/uiAction';
+import { eventAddNew } from '../../actions/eventAction';
 
 const customStyles = {
   content: {
@@ -105,6 +106,16 @@ const CalendarModal = () => {
 
     setTitleValid( true );
     setNotesValid( true );
+
+    dispatch( eventAddNew({
+      ...formValues,
+      // ID Temporal
+      id: new Date().getTime(),
+      user: {
+        _id: "i789rE5pUx42",
+        name: "Manuel"
+      }
+    }) );
 
     closeModal();
 
