@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { uiCloseModal } from '../../actions/uiAction';
-import { eventAddNew, eventClearActiveEvent } from '../../actions/eventAction';
+import { eventAddNew, eventClearActiveEvent, eventUpdated } from '../../actions/eventAction';
 
 const customStyles = {
   content: {
@@ -116,15 +116,24 @@ const CalendarModal = () => {
     setTitleValid( true );
     setNotesValid( true );
 
-    dispatch( eventAddNew({
-      ...formValues,
-      // ID Temporal
-      id: new Date().getTime(),
-      user: {
-        _id: "i789rE5pUx42",
-        name: "Manuel"
-      }
-    }) );
+    if ( activeEvent ) {
+
+      // Actualiza la nota
+      dispatch( eventUpdated( formValues ) );
+
+    } else {
+
+      // Crea una nota nueva
+      dispatch( eventAddNew({
+        ...formValues,
+        id: new Date().getTime(), // <---- ID Temporal
+        user: {
+          _id: "i789rE5pUx42",
+          name: "Manuel"
+        }
+      }) );
+
+    }
 
     closeModal();
 
