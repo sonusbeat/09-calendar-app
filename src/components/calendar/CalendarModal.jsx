@@ -47,7 +47,11 @@ const CalendarModal = () => {
   const { notes, title, start, end } = formValues;
 
   useEffect(() => {
-    activeEvent && setFormValues(activeEvent);
+
+    activeEvent
+      ? setFormValues( activeEvent )
+      : setFormValues( initEvent );
+
   }, [activeEvent, setFormValues]);
 
   const handleInputChange = ({ target }) => {
@@ -174,7 +178,7 @@ const CalendarModal = () => {
         <FontAwesomeIcon icon={ faTimes } />
       </button>
 
-      <h1> Nuevo evento </h1>
+      <h1>{ activeEvent ? "Editar evento" : "Nuevo evento" }</h1>
       <hr />
       <form
         className="container"

@@ -1,7 +1,5 @@
-.fab {
+.fab, .fab-danger {
   position: fixed;
-  bottom: 25px;
-  right: 25px;
 
   display: block;
   width: 70px;
@@ -12,9 +10,18 @@
   align-items: center;
 
   font-size: 30px;
-  border-radius: 100%;
 
   &:focus {
     box-shadow: none;
   }
+}
+
+.fab {
+  bottom: 25px;
+  right: 25px;
+}
+
+.fab-danger {
+  bottom: 25px;
+  left: 25px;
 }

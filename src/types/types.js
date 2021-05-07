@@ -1,11 +1,13 @@
 const types = {
-  uiOpenModal: "[ui] Opened modal",
-  uiCloseModal: "[ui] Closed modal",
 
-  eventSetActive: "[event] Setted Active",
-  eventAddNew: "[event] Added new",
-  eventClearActiveEvent: "[event] Cleared active event",
-  eventUpdated: "[event] Updated event",
+  uiOpenModal:  "[ui] Modal opened",
+  uiCloseModal: "[ui] modal closed",
+
+  eventSetActive:        "[event] Active event Setted",
+  eventAddNew:           "[event] Event Added",
+  eventClearActiveEvent: "[event] Event cleared",
+  eventUpdated:          "[event] Event updated",
+  eventDeleted:          "[event] Event deleted",
 
 };
 
