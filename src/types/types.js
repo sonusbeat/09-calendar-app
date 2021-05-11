@@ -11,7 +11,7 @@ const types = {
 
   authChecking: "[auth] Checking login state",
   authCheckingFinish: "[auth] Finish checking login state",
-  authStartLogin: "[auth] Start login",
+  authLogin: "[auth] Start login",
   authStartRegister: "[auth] Start Register",
   authLogout: "[auth] Logout",
 
