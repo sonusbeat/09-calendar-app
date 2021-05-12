@@ -1,12 +1,11 @@
 import types from '../types/types';
-import { fetchWithoutToken } from "../helpers/fetch";
+import { fetchWithoutToken, fetchWithToken } from "../helpers/fetch";
 import Swal from 'sweetalert2';
 
 
 export const startLogin = ( email, password ) => {
-
   return async ( dispatch ) => {
-    const response = await fetchWithoutToken( "auth/new", { email, password }, "POST" );
+    const response = await fetchWithoutToken( "auth", { email, password }, "POST" );
     const body = await response.json();
 
     if ( body.ok ) {
@@ -30,7 +29,6 @@ export const startLogin = ( email, password ) => {
     }
 
   };
-
 };
 
 export const startRegister = ( name, email, password ) => {
@@ -63,6 +61,33 @@ export const startRegister = ( name, email, password ) => {
     }
   }
 };
+
+export const startChecking = () => {
+  return async ( dispatch ) => {
+    const response = await fetchWithToken( "auth/renew" );
+    const body = await response.json();
+
+    if ( body.ok ) {
+      // Se guarda el token en el storage
+      localStorage.setItem('token', body.token);
+
+      // Para saber cuando va a expirar el token
+      localStorage.setItem( 'token-init-date', new Date().getTime() );
+
+      // Dispara la acción del login
+      dispatch(
+        login({
+          uid: body.uid,
+          name: body.name
+        })
+      );
+    } else {
+      dispatch( checkingFinish() );
+    }
+  };
+};
+
+const checkingFinish = () => ({ type: types.authCheckingFinish });
 
 const login = ( user ) => ({
   type: types.authLogin,
