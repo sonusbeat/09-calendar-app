@@ -1,7 +1,8 @@
 import "../../styles/main.scss";
 import useForm from '../../hooks/useForm';
 import { useDispatch } from 'react-redux';
-import { startLogin } from '../../actions/auth';
+import { startLogin, startRegister } from '../../actions/auth';
+import Swal from 'sweetalert2';
 
 const LoginScreen = () => {
 
@@ -14,10 +15,31 @@ const LoginScreen = () => {
 
   const { loginEmail, loginPassword } = formLoginValues;
 
+  const [ formRegisterValues, handleRegisterInputChange ] = useForm({
+    registerName:          "Hugo",
+    registerEmail:         "hugo@nowhere.com",
+    registerPassword:      "secretodivino",
+    passwordConfirmation:  "secretodivino",
+  });
+
+  const { registerName, registerEmail, registerPassword, passwordConfirmation } = formRegisterValues;
+
+  // Login de usuario
   const handleLogin = (event) => {
     event.preventDefault();
 
     dispatch( startLogin( loginEmail, loginPassword ) );
+  };
+
+  // Registro de usuario
+  const handleRegister = (event) => {
+    event.preventDefault();
+
+    if( registerPassword !== passwordConfirmation ) {
+      return Swal.fire("Error", "Las contraseñas deben coincidir", "error");
+    }
+
+    dispatch( startRegister( registerName, registerEmail, registerPassword ) );
   };
 
   return (
@@ -58,42 +80,50 @@ const LoginScreen = () => {
         <div className="col-md-6 login-form-2 mb-5">
           <h3>Register</h3>
 
-          <form>
+          <form onSubmit={ handleRegister }>
             <div className="form-group">
               <input
-                name="name"
+                name="registerName"
                 type="text"
                 className="form-control"
                 placeholder="Name"
                 autoComplete="off"
+                onChange={ handleRegisterInputChange }
+                value={ registerName }
               />
             </div>
             <div className="form-group">
               <input
-                name="email"
+                name="registerEmail"
                 type="email"
                 className="form-control"
                 placeholder="Email"
                 autoComplete="off"
+                onChange={ handleRegisterInputChange }
+                value={ registerEmail }
               />
             </div>
             <div className="form-group">
               <input
-                name="password"
+                name="registerPassword"
                 type="password"
                 className="form-control"
                 placeholder="Password"
                 autoComplete="off"
+                onChange={ handleRegisterInputChange }
+                value={ registerPassword }
               />
             </div>
 
             <div className="form-group mb-4">
               <input
-                name="password_confirmation"
+                name="passwordConfirmation"
                 type="password"
                 className="form-control"
                 placeholder="Password Confirmation"
                 autoComplete="off"
+                onChange={ handleRegisterInputChange }
+                value={ passwordConfirmation }
               />
             </div>
 
