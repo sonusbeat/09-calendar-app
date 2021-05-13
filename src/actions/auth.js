@@ -64,6 +64,13 @@ export const startRegister = ( name, email, password ) => {
 
 export const startChecking = () => {
   return async ( dispatch ) => {
+    const isCurrentToken = !!(localStorage.getItem("calendar_app_token") || "");
+
+    if (!isCurrentToken) {
+      dispatch(checkingFinish());
+      return;
+    }
+
     const response = await fetchWithToken( "auth/renew" );
     const body = await response.json();
 
