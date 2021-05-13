@@ -4,7 +4,7 @@ const baseUrl = process.env.REACT_APP_API_URL;
  * Fetch endpoint without token
  *
  * @param {string} endpoint Example: auth, event
- * @param {Object} data Example: { email, password }
+ * @param {Object} data Payload: { email, password }
  * @param {string?} method GET, POST, PUT, PATCH, DELETE
  * @returns {Promise<Response>}
  */
@@ -33,9 +33,9 @@ const fetchWithoutToken = ( endpoint, data, method = "GET") => {
 /**
  * Fetch endpoint without token
  *
- * @param {string} endpoint Example: auth, event
- * @param {object} data Example: { email, password }
- * @param {string?} method GET, POST, PUT, PATCH, DELETE
+ * @param {String} endpoint Example: auth, event
+ * @param {Object} data Payload to be sended as object.
+ * @param {String?} method GET, POST, PUT, PATCH, DELETE
  * @returns {Promise<Response>}
  */
  const fetchWithToken = ( endpoint, data, method = "GET") => {

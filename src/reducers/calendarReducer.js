@@ -1,21 +1,20 @@
 import types from "../types/types";
-import moment from "moment";
+
+//  Objeto de referencia
+// {
+//   id: "65a4s6a54f6asdf",
+//   title: "Junta con recursos humanos",
+//   start: moment().add(2, "days").toDate(),
+//   end: moment().add(2, "days").add(2, "hours").toDate(),
+//   notes: "Se definirán los perfiles para los proximos proyectos.",
+//   user: {
+//     _id: "258gd968&#tg6",
+//     name: "Daniel",
+//   },
+// },
 
 const initialState = {
-  events: [
-    {
-      id: new Date().getTime(),
-      title: "Junta con UI",
-      start: moment().add(2, "days").toDate(),
-      end: moment().add(2, "days").add(2, "hours").toDate(),
-      bgcolor: "#fafafa",
-      notes: "Traer libreta de apuntes",
-      user: {
-        _id: "258gd968&#tg6",
-        name: "Daniel",
-      },
-    },
-  ],
+  events: [],
   activeEvent: null,
 };
 
@@ -54,6 +53,12 @@ const calendarReducer = ( state = initialState, action ) => {
         ...state,
         events: state.events.filter( event => event.id !== state.activeEvent.id ),
         activeEvent: null
+      }
+
+    case types.eventLoaded:
+      return {
+        ...state,
+        events: [ ...action.payload ]
       }
 
     default:

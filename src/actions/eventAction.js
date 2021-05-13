@@ -1,5 +1,6 @@
 import { fetchWithToken } from "../helpers/fetch";
 import types from "../types/types";
+import prepareEvents from '../helpers/prepareEvents';
 
 export const eventStartAddNew = ( event ) => {
   return async ( dispatch, getState ) => {
@@ -49,3 +50,35 @@ export const eventUpdated = ( event ) => ({
 });
 
 export const eventDeleted = () => ({ type: types.eventDeleted });
+
+
+export const eventStartLoading = () => {
+  return async ( dispatch ) => {
+
+    try {
+
+      const response = await fetchWithToken( "events" );
+      const body = await response.json();
+
+      const events = prepareEvents( body.events );
+
+      if( body.ok ) {
+
+        // Disparamos la acción para enviar los eventos al state del redux
+        dispatch( eventLoaded( events ) );
+
+      }
+
+    } catch (error) {
+      console.log( error );
+    }
+
+    // dispatch(eventLoaded( events ));
+
+  }
+};
+
+const eventLoaded = ( events ) => ({
+  type: types.eventLoaded,
+  payload: events,
+});

@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uiOpenModal } from '../../actions/uiAction';
-import { eventSetActive, eventClearActiveEvent } from '../../actions/eventAction';
+import { eventSetActive, eventClearActiveEvent, eventStartLoading } from '../../actions/eventAction';
 import { Calendar, momentLocalizer } from 'react-big-calendar'
 import moment from "moment";
 
@@ -22,11 +22,18 @@ const CalendarScreen = () => {
   // Redux
   const dispatch = useDispatch();
 
-  // Traer los eventos del Redux
+  // Traer los eventos del State de Redux
   const { events, activeEvent } = useSelector(state => state.calendar);
+
+  // Traer el UID del State de Redux
+  const { uid } = useSelector(state => state.auth);
 
   // Obtener o cambiar state de lastView del localstorage para mantener, month, week, day
   const [lastView, setLastView] = useState( localStorage.getItem("lastView") || "month" );
+
+  useEffect(() => {
+    dispatch(eventStartLoading());
+  }, [ dispatch ]);
 
   const onDoubleClick = ( event ) => {
     dispatch( uiOpenModal() );
@@ -51,7 +58,13 @@ const CalendarScreen = () => {
   const eventStyleGetter = ( event, start, end, isSelected ) => {
 
     const style = {
-      backgroundColor: "#3667F7",
+
+      // Cambiar el color de fondo del evento
+      // si el uid es igual al del usuario del evento
+      // en pocas palabras mostrar de color azul quien creó el evento
+      backgroundColor: ( uid === event.user._id ) ? "#3667F7" : "#465660",
+      // ******************************************************************
+
       borderRadius: "0px",
       opacity: 0.8,
       display: "block",
