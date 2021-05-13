@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { uiCloseModal } from '../../actions/uiAction';
-import { eventAddNew, eventClearActiveEvent, eventUpdated } from '../../actions/eventAction';
+import { eventStartAddNew, eventClearActiveEvent, eventUpdated } from '../../actions/eventAction';
 
 const customStyles = {
   content: {
@@ -32,8 +32,8 @@ const initEvent = {
 
 const CalendarModal = () => {
   // Redux
-  const { modalOpen } = useSelector( state => state.ui )
-  const { activeEvent } = useSelector( state => state.calendar )
+  const { modalOpen } = useSelector( state => state.ui );
+  const { activeEvent } = useSelector( state => state.calendar );
   const dispatch = useDispatch();
 
   // useState
@@ -128,14 +128,7 @@ const CalendarModal = () => {
     } else {
 
       // Crea una nota nueva
-      dispatch( eventAddNew({
-        ...formValues,
-        id: new Date().getTime(), // <---- ID Temporal
-        user: {
-          _id: "i789rE5pUx42",
-          name: "Manuel"
-        }
-      }) );
+      dispatch( eventStartAddNew(formValues) );
 
     }
 

@@ -3,6 +3,7 @@ const types = {
   uiOpenModal:  "[ui] Modal opened",
   uiCloseModal: "[ui] modal closed",
 
+  eventStartAddNew:      "[event] Start add new",
   eventSetActive:        "[event] Active event Setted",
   eventAddNew:           "[event] Event Added",
   eventClearActiveEvent: "[event] Event cleared",

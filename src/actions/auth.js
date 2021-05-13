@@ -64,7 +64,7 @@ export const startRegister = ( name, email, password ) => {
 
 export const startChecking = () => {
   return async ( dispatch ) => {
-    const isCurrentToken = !!(localStorage.getItem("calendar_app_token") || "");
+    const isCurrentToken = !!(localStorage.getItem("token") || "");
 
     if (!isCurrentToken) {
       dispatch(checkingFinish());
