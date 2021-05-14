@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useDispatch } from 'react-redux';
-import { eventDeleted } from '../../actions/eventAction';
+import { eventStartDelete } from '../../actions/eventAction';
 
 
 const DeleteEventFab = () => {
@@ -9,7 +9,7 @@ const DeleteEventFab = () => {
 
   const deleteEvent = () => {
     // Eliminar el evento del state de Redux
-    dispatch( eventDeleted() );
+    dispatch( eventStartDelete() );
   }
 
   return (

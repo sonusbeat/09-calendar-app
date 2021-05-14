@@ -23,7 +23,7 @@ export const eventStartAddNew = ( event ) => {
         dispatch( eventAddNew( event ) );
 
         Swal.fire({
-          position: 'center-center',
+          position: 'center',
           icon: 'success',
           title: 'El evento ha sido creado',
           showConfirmButton: false,
@@ -66,7 +66,7 @@ export const eventStartUpdate = ( event ) => {
         dispatch( eventUpdated( event ) );
 
         Swal.fire({
-          position: 'center-center',
+          position: 'center',
           icon: 'success',
           title: 'El evento ha sido actualizado',
           showConfirmButton: false,
@@ -89,7 +89,40 @@ const eventUpdated = ( event ) => ({
   payload: event
 });
 
-export const eventDeleted = () => ({ type: types.eventDeleted });
+export const eventStartDelete = () => {
+  return async ( dispatch, getState ) => {
+
+    const { id } = getState().calendar.activeEvent;
+
+    try {
+      const response = await fetchWithToken( `events/${id}`, {}, "DELETE" );
+      const body = await response.json();
+
+      if ( body.ok ) {
+
+        // Se llama el dispatch
+        dispatch( eventDeleted() );
+
+        Swal.fire({
+          position: 'center',
+          icon: 'success',
+          title: 'El evento ha sido eliminado',
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+      } else {
+        Swal.fire("Error", body.msg, "error");
+      }
+
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+
+const eventDeleted = () => ({ type: types.eventDeleted });
 
 
 export const eventStartLoading = () => {
