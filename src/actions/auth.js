@@ -1,6 +1,8 @@
+import Swal from 'sweetalert2';
+
 import types from '../types/types';
 import { fetchWithoutToken, fetchWithToken } from "../helpers/fetch";
-import Swal from 'sweetalert2';
+import { eventLogout } from './eventAction';
 
 
 export const startLogin = ( email, password ) => {
@@ -107,6 +109,12 @@ export const startLogout = () => {
     // Borrar el localStorage
     localStorage.clear();
 
+    // Al salir de la sesión
+    // Limpiamos el estado inicial
+    dispatch( eventLogout() );
+
+
+    // Lamamos el logout de la app
     dispatch( logout() );
 
   };
