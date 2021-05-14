@@ -1,6 +1,7 @@
 import { fetchWithToken } from "../helpers/fetch";
 import types from "../types/types";
 import prepareEvents from '../helpers/prepareEvents';
+import Swal from 'sweetalert2';
 
 export const eventStartAddNew = ( event ) => {
   return async ( dispatch, getState ) => {
@@ -20,6 +21,14 @@ export const eventStartAddNew = ( event ) => {
         };
 
         dispatch( eventAddNew( event ) );
+
+        Swal.fire({
+          position: 'center-center',
+          icon: 'success',
+          title: 'El evento ha sido creado',
+          showConfirmButton: false,
+          timer: 1500
+        });
       }
 
     } catch(error) {
@@ -44,7 +53,38 @@ export const eventClearActiveEvent = () => ({
   type: types.eventClearActiveEvent
 });
 
-export const eventUpdated = ( event ) => ({
+export const eventStartUpdate = ( event ) => {
+
+  return async ( dispatch ) => {
+
+    try {
+
+      const response = await fetchWithToken( `events/${event.id}`, event, "PATCH" );
+      const body = await response.json();
+
+      if ( body.ok ) {
+        dispatch( eventUpdated( event ) );
+
+        Swal.fire({
+          position: 'center-center',
+          icon: 'success',
+          title: 'El evento ha sido actualizado',
+          showConfirmButton: false,
+          timer: 1500
+        });
+
+      } else {
+        Swal.fire("Error", body.msg, "error");
+      }
+
+    } catch (error) {
+      console.log( error );
+    }
+
+  };
+};
+
+const eventUpdated = ( event ) => ({
   type: types.eventUpdated,
   payload: event
 });

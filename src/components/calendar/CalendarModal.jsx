@@ -7,7 +7,7 @@ import Swal from "sweetalert2";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSave, faTimes } from '@fortawesome/free-solid-svg-icons'
 import { uiCloseModal } from '../../actions/uiAction';
-import { eventStartAddNew, eventClearActiveEvent, eventUpdated } from '../../actions/eventAction';
+import { eventStartAddNew, eventClearActiveEvent, eventStartUpdate } from '../../actions/eventAction';
 
 const customStyles = {
   content: {
@@ -123,7 +123,7 @@ const CalendarModal = () => {
     if ( activeEvent ) {
 
       // Actualiza la nota
-      dispatch( eventUpdated( formValues ) );
+      dispatch( eventStartUpdate( formValues ) );
 
     } else {
 
