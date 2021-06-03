@@ -11,7 +11,7 @@ const Spinner = ({ msg }) => {
       style={{ height: "100vh" }}
     >
       <div className="spinner-border text-success" role="status">
-        <span className="sr-only">{ message } ...</span>
+        <span id="loading" className="sr-only">{ message } ...</span>
       </div>
     </div>
   );
