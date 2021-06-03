@@ -38,6 +38,13 @@ export const startLogin = ( email, password ) => {
   };
 };
 
+/**
+ * 
+ * @param {String} name 
+ * @param {String} email 
+ * @param {String} password 
+ * @returns Promise
+ */
 export const startRegister = ( name, email, password ) => {
   return async ( dispatch ) => {
     const response = await fetchWithoutToken( "auth/new", { name, email, password }, "POST" );
