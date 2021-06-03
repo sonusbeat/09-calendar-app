@@ -2,7 +2,7 @@ import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
 import Swal from "sweetalert2";
 
-import { startLogin, startRegister } from "../../actions/auth";
+import { startChecking, startLogin, startLogout, startRegister } from "../../actions/auth";
 import types from "../../types/types";
 
 import * as fetchModule from "../../helpers/fetch";
@@ -27,8 +27,11 @@ const initialState = {};
 // con el objeto del estado inicial
 let store = mockStore(initialState);
 
-// Se crea la función para crear el localStorage con setItem
+// Se crea la función para realizar el mock con setItem
 Storage.prototype.setItem = jest.fn();
+
+// Se inicializa el token
+// let token = "";
 
 describe("Pruebas en Auth", () => {
   // Ciclo de vida de las pruebas
@@ -41,6 +44,7 @@ describe("Pruebas en Auth", () => {
   });
 
   test("StartLogin debería funcionar correctamente", async () => {
+
     // Se hace el dispactch de la acción de startLogin con los argumentos necesarios
     await store.dispatch(startLogin("qbixmex@gmail.com", "password"));
 
@@ -72,8 +76,8 @@ describe("Pruebas en Auth", () => {
       expect.any(Number)
     );
 
-    // const token = localStorage.setItem.mock.calls[0][1];
-    // console.log(token);
+    // Se asigna el token
+    // token = localStorage.setItem.mock.calls[0][1];
   });
 
   test("Login incorrecto", async () => {
@@ -142,5 +146,61 @@ describe("Pruebas en Auth", () => {
 
     // Se espera que se halle guardado el localStorage con el token-init-date con cualquier número
     expect( localStorage.setItem ).toHaveBeenCalledWith( "token-init-date", expect.any(Number) );
+  });
+
+  test("StartChecking debería funcionar correctamente", async () => {
+
+    // Se simula que se hace un fetch con token
+    fetchModule.fetchWithToken = jest.fn(() => ({
+      json() {
+        return {
+          ok: true,
+          uid: "0123456789",
+          name: "Alejandro",
+          token: "abc123def456",
+        };
+      },
+    }));
+
+    // Se dispara la acción de startChecking
+    await store.dispatch( startChecking() );
+
+    // Se obtienen las acciones del store
+    const actions = store.getActions();
+
+    // Se espera que de la acción en primera posición
+    // sea igual al objeto administrado
+    expect( actions[0] ).toEqual({
+        type: types.authLogin,
+        payload: {
+            uid: "0123456789",
+            name: "Alejandro",
+        }
+    });
+
+    // Se espera que se halle llamado con el token y el valor administrado
+    expect( localStorage.setItem ).toHaveBeenCalledWith("token", "abc123def456");
+
+    // Se espera que se halle llamado con el token-init-date con cualquier número
+    expect( localStorage.setItem ).toHaveBeenCalledWith("token-init-date", expect.any(Number));
+  });
+
+  test("StartLogout debería funcionar correctamente", async() => {
+
+    // Se simula hacer el LocalStorage.clear()
+    Storage.prototype.clear = jest.fn();
+
+    // Se dispara la acción del StartLogout
+    await store.dispatch( startLogout() );
+
+    // Se obtienen las acciones
+    const actions = store.getActions();
+
+    // Se espera que se halle llamado la acción del mock de localStorage.clear
+    expect( localStorage.clear ).toHaveBeenCalled();
+
+    // Se espera que se hallen llamado con el type administrado
+    expect( actions[0] ).toEqual({ type: types.eventLogout });
+    expect( actions[1] ).toEqual({ type: types.authLogout });
   });
 });
