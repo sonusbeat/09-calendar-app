@@ -3,6 +3,7 @@
 exports[`Pruebas en <DeleteEventFab /> Debería de mostrar el componente correctamente 1`] = `
 <button
   className="btn btn-danger fab-danger"
+  id="delete"
   onClick={[Function]}
 >
   <svg

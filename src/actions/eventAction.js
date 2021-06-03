@@ -121,9 +121,7 @@ export const eventStartDelete = () => {
   };
 };
 
-
 const eventDeleted = () => ({ type: types.eventDeleted });
-
 
 export const eventStartLoading = () => {
   return async ( dispatch ) => {

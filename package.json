@@ -1,6 +1,6 @@
 {
   "name": "09-calendar-app",
-  "version": "4.9.0",
+  "version": "4.10.0",
   "private": true,
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.3",
