@@ -1,8 +1,15 @@
 import configureStore from "redux-mock-store";
 import thunk from "redux-thunk";
+import Swal from "sweetalert2";
 
 import { startLogin } from "../../actions/auth";
 import types from "../../types/types";
+
+// Se crea el mock del Sweet Alert
+jest.mock("sweetalert2", () => ({
+    // Se espera que se llame un objecto con el método "fire"
+    fire: jest.fn(),
+}));
 
 // Se crea un arreglo con los middlewares
 // en este caso usaremos thunk
@@ -63,5 +70,28 @@ describe("Pruebas en Auth", () => {
         // console.log(token);
 
     });
+   
     
+    test("Login incorrecto", async () => {
+        // Disparamos la acción con el password incorrecto
+        await store.dispatch( startLogin("qbixmex@gmail.com", "0123456789") );
+
+        // Se obtienen las acciones del store de Redux
+        let actions = store.getActions();
+
+        // Se espera que devuelva un arreglo vacio
+        expect(actions).toEqual([]);
+
+        // Se espera que se llame el Sweet Alert con la información administrada
+        expect( Swal.fire ).toHaveBeenCalledWith("Error", "Contraseña no válida", "error");
+
+        // Disparamos la acción con el email incorrecto
+        await store.dispatch( startLogin("user@nowhere.com", "password") );
+
+        // Se reasigna la variable "actions" con nuevos valores
+        actions = store.getActions();
+
+        // Se espera que se llame el Sweet Alert con la información administrada
+        expect( Swal.fire ).toHaveBeenCalledWith("Error", "El usuario no existe con el email administrado", "error");
+    });
 });
