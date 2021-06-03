@@ -16,22 +16,70 @@ const mockStore = configureStore(middlewares);
 // store.dispatch = jest.fn();
 
 describe("Pruebas en AppRouter", () => {
-  test("Debería de mostrar texto (Loading ...)", () => {
 
+  test("Debería de mostrar texto (Loading ...)", () => {
     const initialState = {
       auth: { checking: true },
     };
 
     const store = mockStore(initialState);
-    
+
     const wrapper = mount(
-        <Provider store={store}>
+      <Provider store={store}>
         <AppRouter />
       </Provider>
     );
-    
+
     const text = "Loading ...";
 
     expect(wrapper.find("#loading").text()).toBe(text);
   });
+
+  test("Debe de mostrar la ruta pública", () => {
+    const initialState = {
+      auth: {
+        checking: false,
+        uid: null,
+      },
+    };
+
+    const store = mockStore(initialState);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <AppRouter />
+      </Provider>
+    );
+
+    expect( wrapper ).toMatchSnapshot();
+
+    expect( wrapper.find(".login-container").exists() ).toBe(true);
+  });
+
+  test("Debe de mostrar la ruta privada", () => {
+    const initialState = {
+      ui: {
+        modalOpen: false,
+      },
+      calendar: {
+        events: [],
+      },
+      auth: {
+        checking: false,
+        uid: "0123456789",
+        name: "Daniel",
+      },
+    };
+
+    const store = mockStore(initialState);
+
+    const wrapper = mount(
+      <Provider store={ store }>
+        <AppRouter />
+      </Provider>
+    );
+
+    expect( wrapper.find(".calendar-screen").exists() ).toBe(true);
+  });
+
 });

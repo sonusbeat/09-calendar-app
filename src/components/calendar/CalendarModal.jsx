@@ -20,10 +20,6 @@ const customStyles = {
   },
 };
 
-if( process.env.NODE_ENV !== 'test' ) {
-  Modal.setAppElement("#root");
-}
-
 const now = moment().minutes(0).seconds(0).add(1, "hours"); // 2:00:00
 const nowPlus1 = now.clone().add(1, "hours"); // 3:00:00
 
@@ -141,10 +137,11 @@ const CalendarModal = () => {
     // TODO: Realizar guardado en base de datos
   };
 
-
-  // Make sure to bind modal to your appElement
-  // (https://reactcommunity.org/react-modal/accessibility/)
-  Modal.setAppElement("#root");
+  if( process.env.NODE_ENV !== 'test' ) {
+    // Make sure to bind modal to your appElement
+    // (https://reactcommunity.org/react-modal/accessibility/)
+    Modal.setAppElement("#root");
+  }
 
   return (
     <Modal
