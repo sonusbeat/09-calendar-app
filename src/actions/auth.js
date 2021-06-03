@@ -4,7 +4,12 @@ import types from '../types/types';
 import { fetchWithoutToken, fetchWithToken } from "../helpers/fetch";
 import { eventLogout } from './eventAction';
 
-
+/**
+ * 
+ * @param {String} email 
+ * @param {String} password 
+ * @returns Promise
+ */
 export const startLogin = ( email, password ) => {
   return async ( dispatch ) => {
     const response = await fetchWithoutToken( "auth", { email, password }, "POST" );
