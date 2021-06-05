@@ -145,6 +145,9 @@ const CalendarModal = () => {
 
   return (
     <Modal
+      // ID único del modal
+      id="modal"
+
       // Si se pone true se mostrará el modal
       isOpen={ modalOpen }
 
@@ -164,6 +167,8 @@ const CalendarModal = () => {
 
       // La clase del overlay del modal
       overlayClassName="modal-fondo"
+
+      ariaHideApp={ !process.env.NODE_ENV === "test" }
     >
       <button
         className="btn btn-secondary btn-close"
