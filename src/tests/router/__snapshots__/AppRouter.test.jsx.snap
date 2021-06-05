@@ -15,6 +15,7 @@ exports[`Pruebas en AppRouter Debe de mostrar la ruta pública 1`] = `
           Login
         </h3>
         <form
+          id="login"
           onSubmit={[Function]}
         >
           <div
@@ -60,6 +61,7 @@ exports[`Pruebas en AppRouter Debe de mostrar la ruta pública 1`] = `
           Register
         </h3>
         <form
+          id="register"
           onSubmit={[Function]}
         >
           <div

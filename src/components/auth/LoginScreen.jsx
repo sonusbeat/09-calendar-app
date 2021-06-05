@@ -35,6 +35,22 @@ const LoginScreen = () => {
   const handleRegister = (event) => {
     event.preventDefault();
 
+    if( !registerName ) {
+      return Swal.fire("Error", "El nombre es obligatorio", "error");
+    }
+
+    if( !registerEmail ) {
+      return Swal.fire("Error", "El email es obligatorio", "error");
+    }
+
+    if( !registerPassword ) {
+      return Swal.fire("Error", "La contraseña es obligatoria", "error");
+    }
+
+    if( !passwordConfirmation ) {
+      return Swal.fire("Error", "La confirmación de contraseña es obligatoria", "error");
+    }
+
     if( registerPassword !== passwordConfirmation ) {
       return Swal.fire("Error", "Las contraseñas deben coincidir", "error");
     }
