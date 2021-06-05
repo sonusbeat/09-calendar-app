@@ -48,7 +48,7 @@ const LoginScreen = () => {
         <div className="col-md-6 login-form-1 mb-5">
           <h3>Login</h3>
 
-          <form onSubmit={ handleLogin }>
+          <form id="login" onSubmit={ handleLogin }>
             <div className="form-group">
               <input
                 name="loginEmail"
@@ -80,7 +80,7 @@ const LoginScreen = () => {
         <div className="col-md-6 login-form-2 mb-5">
           <h3>Register</h3>
 
-          <form onSubmit={ handleRegister }>
+          <form id="register" onSubmit={ handleRegister }>
             <div className="form-group">
               <input
                 name="registerName"
