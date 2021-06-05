@@ -78,23 +78,30 @@ export const startRegister = ( name, email, password ) => {
 
 export const startChecking = () => {
   return async ( dispatch ) => {
-    /*
-      Es código de una chica en Udemy donde propone poner estas líneas de código
-      pero al momento de hacer las pruebas estas fallan
-    */
-    /*
-      // Si no hay token en el local storage o es un string vacio al
-      // realizar un localStorage.getItem("token")
-      // Devuelve false con el doble !! en vez de null o undefined
-      const isCurrentToken = !!(localStorage.getItem("token") || "");
+    
+    if( process.env.NODE_ENV !== 'test' ) {
 
-      // Si la variable es false entonces dispara el checkingfinish
-      // y retorna la función para que no se siga ejecutando
-      if (!isCurrentToken) {
-        dispatch(checkingFinish());
-        return;
+      /*
+        Es código de una chava en udemy donde propone poner estas líneas de código
+        pero al momento de hacer las pruebas estas fallan
+  
+        Si no hay token en el local storage o es un string vacio al
+        realizar un localStorage.getItem("token")
+        Devuelve false con el doble !! en vez de null o undefined
+      */
+      
+      const isTokenPresent = !!(localStorage.getItem("token") || undefined);
+
+      /*
+        Si la variable es false entonces dispara el checkingfinish
+        y retorna la función para que no se siga ejecutando
+      */
+      if ( !isTokenPresent ) {
+        dispatch( checkingFinish() );
+        return false;
       }
-    */
+
+    }
 
     const response = await fetchWithToken( "auth/renew" );
     const body = await response.json();

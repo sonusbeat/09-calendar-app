@@ -162,6 +162,8 @@ describe("Pruebas en Auth", () => {
       },
     }));
 
+    const isTokenPresent = false;
+
     // Se dispara la acción de startChecking
     await store.dispatch( startChecking() );
 
